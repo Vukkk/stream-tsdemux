@@ -97,7 +97,7 @@ class TSDemuxer extends Writable {
       },
       id3: {
         data: Buffer.alloc(0, 0),
-        pipe: new PESStream("id3")
+        pipe: new PESStream('id3')
       }
     };
     if (demux && demux.video) {
