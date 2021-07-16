@@ -94,6 +94,10 @@ class TSDemuxer extends Writable {
       audio: {
         data: Buffer.alloc(0, 0),
         pipe: new PESStream('audio')
+      },
+      id3: {
+        data: Buffer.alloc(0, 0),
+        pipe: new PESStream("id3")
       }
     };
     if (demux && demux.video) {
@@ -101,6 +105,9 @@ class TSDemuxer extends Writable {
     }
     if (demux && demux.audio) {
       this.pes.audio.pipe.pipe(demux.audio);
+    }
+    if (demux && demux.id3) {
+      this.pes.id3.pipe.pipe(demux.id3);
     }
   }
 
@@ -171,6 +178,8 @@ class TSDemuxer extends Writable {
             stream = this.pes.video;
           } else if (packet.pid === this.pmt.aac) {
             stream = this.pes.audio;
+          } else if (packet.pid === this.pmt.id3) {
+            stream = this.pes.id3;
           } else {
             debug(`WARN: Ignoring PID ${packet.pid}`);
           }
